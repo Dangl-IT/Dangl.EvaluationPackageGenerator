@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dangl.EvaluationPackageGenerator", "Dangl.EvaluationPackageGenerator\Dangl.EvaluationPackageGenerator.csproj", "{28F64D94-F9EE-4243-ACE7-ED499EEF355D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B509F3B-C2E8-4C1C-A2DC-C62F1A3DFE20}
+	EndGlobalSection
+EndGlobal
