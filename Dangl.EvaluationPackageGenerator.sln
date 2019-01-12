@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dangl.EvaluationPackageGene
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7828F566-5FE2-427B-B746-08B418CB0964}"
 	ProjectSection(SolutionItems) = preProject
+		docfx.json = docfx.json
+		GitVersion.yml = GitVersion.yml
+		Jenkinsfile = Jenkinsfile
 		README.md = README.md
+		toc.yml = toc.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".build", "build\.build.csproj", "{16C861C2-4199-414B-A115-0DC11C27F185}"
@@ -18,12 +22,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{16C861C2-4199-414B-A115-0DC11C27F185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16C861C2-4199-414B-A115-0DC11C27F185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28F64D94-F9EE-4243-ACE7-ED499EEF355D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16C861C2-4199-414B-A115-0DC11C27F185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16C861C2-4199-414B-A115-0DC11C27F185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
