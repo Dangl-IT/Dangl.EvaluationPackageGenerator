@@ -161,7 +161,7 @@ namespace Dangl.EvaluationPackageGenerator
                 .SetDocuApiKey(DocuApiKey)
                 .SetSourceDirectory(OutputDirectory / "docs")
                 .SetVersion(GitVersion.NuGetVersion)
-                .SetAssetFilePaths(new string[] { OutputDirectory / X64CliZipPath, X86CliZipPath })
+                .SetAssetFilePaths(new string[] { X64CliZipPath, X86CliZipPath })
             );
         });
 }
