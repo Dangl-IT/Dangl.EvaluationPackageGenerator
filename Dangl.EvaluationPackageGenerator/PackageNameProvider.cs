@@ -11,7 +11,9 @@
                 "Dangl.AVACloud.Client",
                 "Dangl.AVACloud.Client.Shared",
                 "Dangl.GAEB",
-                "Dangl.Oenorm"
+                "Dangl.Oenorm",
+                "Dangl.REB",
+                "Dangl.SIA"
             };
     }
 }
