@@ -1,11 +1,10 @@
-using Nuke.Azure.KeyVault;
 using Nuke.Common;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.DocFX;
+using Nuke.Common.Tools.DocFX;
 using Nuke.WebDocu;
 using System;
 using System.IO;
@@ -14,8 +13,11 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.DocFX.DocFXTasks;
+using static Nuke.Common.Tools.DocFX.DocFXTasks;
 using static Nuke.WebDocu.WebDocuTasks;
+using Nuke.Common.Tools.AzureKeyVault.Attributes;
+using Nuke.Common.Tools.AzureKeyVault;
+using Nuke.Common.IO;
 
 class Build : NukeBuild
 {
@@ -96,8 +98,8 @@ namespace Dangl.EvaluationPackageGenerator
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
         });
@@ -109,24 +111,24 @@ namespace Dangl.EvaluationPackageGenerator
         {
             var publishPath = OutputDirectory / "CLI_Tool";
             DotNetPublish(x => x
-                .SetWorkingDirectory(RootDirectory / "Dangl.EvaluationPackageGenerator")
+                .SetProcessWorkingDirectory(RootDirectory / "Dangl.EvaluationPackageGenerator")
                 .SetSelfContained(true)
                 .SetConfiguration("Release")
                 .SetRuntime("win10-x64")
                 .SetOutput(publishPath)
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.NuGetVersionV2));
             ZipFile.CreateFromDirectory(publishPath, X64CliZipPath);
             DeleteDirectory(publishPath);
 
             DotNetPublish(x => x
-                .SetWorkingDirectory(RootDirectory / "Dangl.EvaluationPackageGenerator")
+                .SetProcessWorkingDirectory(RootDirectory / "Dangl.EvaluationPackageGenerator")
                 .SetSelfContained(true)
                 .SetConfiguration("Release")
                 .SetRuntime("win10-x86")
                 .SetOutput(publishPath)
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.NuGetVersionV2));
             ZipFile.CreateFromDirectory(publishPath, X86CliZipPath);
