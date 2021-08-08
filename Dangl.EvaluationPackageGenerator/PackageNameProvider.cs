@@ -13,6 +13,7 @@
                 "Dangl.GAEB",
                 "Dangl.Oenorm",
                 "Dangl.REB",
+                "Dangl.REB.Formulas",
                 "Dangl.SIA"
             };
     }
