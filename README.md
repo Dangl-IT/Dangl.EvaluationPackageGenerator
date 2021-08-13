@@ -20,4 +20,5 @@ The following CLI parameters are available:
 | --mygetapikey        | Required, the API Key to access the MyGet account. The account must have access to the private `dangl-ava` feed |
 | --outputpath        | Optional, defaults to `./`. Where the generated package should be placed |
 | --readmepath | Optional. If present, this file will be copied into the generated package |
+| --includeprerelease | Optional. Either `true` or `false`, whether to include beta packages or only stable versions|
 | --help    | Display options |

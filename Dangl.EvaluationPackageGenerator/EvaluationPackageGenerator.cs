@@ -42,7 +42,7 @@ namespace Dangl.EvaluationPackageGenerator
             SetupHttpClient();
             foreach (var package in PackageNameProvider.PackageNames)
             {
-                var version = await DownloadSinglePackage(package, packageFolder);
+                var version = await DownloadSinglePackage(package, packageFolder, _commandLineOptions.IncludePrerelease);
                 packageVersions.Add(package, version);
             }
 
@@ -69,11 +69,12 @@ namespace Dangl.EvaluationPackageGenerator
                 .AuthenticationHeaderValue("Basic", GetBasicAuthValue());
         }
 
-        private async Task<string> DownloadSinglePackage(string packageName, string packageFolder)
+        private async Task<string> DownloadSinglePackage(string packageName, string packageFolder, bool includePrerelease)
         {
             Console.WriteLine("Generating " + packageName + "...");
 
-            var packagesJson = await _httpClient.GetStringAsync(MYGET_QUERY_URL);
+            var queryUrl = includePrerelease ? $"{MYGET_QUERY_URL}?prerelease=true" : MYGET_QUERY_URL;
+            var packagesJson = await _httpClient.GetStringAsync(queryUrl);
             var packages = JObject.Parse(packagesJson);
 
             var packageVersion = (string)((packages["data"] as JArray)
