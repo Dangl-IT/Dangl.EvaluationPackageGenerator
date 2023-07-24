@@ -14,7 +14,8 @@
                 "Dangl.Oenorm",
                 "Dangl.REB",
                 "Dangl.REB.Formulas",
-                "Dangl.SIA"
+                "Dangl.SIA",
+                "Dangl.ProductData"
             };
     }
 }
