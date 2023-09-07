@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Build Schema",
   "$ref": "#/definitions/build",
+  "title": "Build Schema",
   "definitions": {
     "build": {
       "type": "object",
@@ -30,6 +30,7 @@
             "AppVeyor",
             "AzurePipelines",
             "Bamboo",
+            "Bitbucket",
             "Bitrise",
             "GitHubActions",
             "GitLab",
@@ -43,9 +44,6 @@
             "VSCode"
           ]
         },
-        "KeyVault": {
-          "type": "string"
-        },
         "KeyVaultBaseUrl": {
           "type": "string"
         },
@@ -53,6 +51,9 @@
           "type": "string"
         },
         "KeyVaultClientSecret": {
+          "type": "string"
+        },
+        "KeyVaultTenantId": {
           "type": "string"
         },
         "NoLogo": {

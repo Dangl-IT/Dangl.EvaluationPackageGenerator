@@ -1,23 +1,21 @@
 using Nuke.Common;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.AzureKeyVault;
+using Nuke.Common.Tools.DocFX;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.DocFX;
 using Nuke.WebDocu;
 using System;
 using System.IO;
 using System.IO.Compression;
 using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.TextTasks;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.DocFX.DocFXTasks;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.WebDocu.WebDocuTasks;
-using Nuke.Common.Tools.AzureKeyVault.Attributes;
-using Nuke.Common.Tools.AzureKeyVault;
-using Nuke.Common.IO;
 
 class Build : NukeBuild
 {
@@ -26,16 +24,17 @@ class Build : NukeBuild
     [Parameter] readonly string KeyVaultBaseUrl;
     [Parameter] readonly string KeyVaultClientId;
     [Parameter] readonly string KeyVaultClientSecret;
-    [KeyVault] readonly KeyVault KeyVault;
+    [Parameter] readonly string KeyVaultTenantId;
 
-    [KeyVaultSettings(
-    BaseUrlParameterName = nameof(KeyVaultBaseUrl),
-    ClientIdParameterName = nameof(KeyVaultClientId),
-    ClientSecretParameterName = nameof(KeyVaultClientSecret))]
-    readonly KeyVaultSettings KeyVaultSettings;
+    [AzureKeyVaultConfiguration(
+            BaseUrlParameterName = nameof(KeyVaultBaseUrl),
+            ClientIdParameterName = nameof(KeyVaultClientId),
+            ClientSecretParameterName = nameof(KeyVaultClientSecret),
+            TenantIdParameterName = nameof(KeyVaultTenantId))]
+    readonly AzureKeyVaultConfiguration KeyVaultSettings;
 
-    [KeyVaultSecret] readonly string DocuBaseUrl;
-    [KeyVaultSecret("DanglEvaluationPackageGenerator-DocuApiKey")] readonly string DocuApiKey;
+    [AzureKeyVaultSecret] readonly string DocuBaseUrl;
+    [AzureKeyVaultSecret("DanglEvaluationPackageGenerator-DocuApiKey")] readonly string DocuApiKey;
 
     [Parameter] readonly string Configuration = IsLocalBuild ? "Debug" : "Release";
 
@@ -51,7 +50,7 @@ class Build : NukeBuild
     Target Clean => _ => _
         .Executes(() =>
         {
-            EnsureCleanDirectory(OutputDirectory);
+            OutputDirectory.CreateOrCleanDirectory();
         });
 
     Target Restore => _ => _
@@ -87,7 +86,7 @@ namespace Dangl.EvaluationPackageGenerator
         public static DateTime BuildDateUtc => {currentDateUtc};
     }}
 }}";
-            WriteAllText(filePath, content);
+            filePath.WriteAllText(content);
         });
 
     Target Compile => _ => _
@@ -120,7 +119,7 @@ namespace Dangl.EvaluationPackageGenerator
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.NuGetVersionV2));
             ZipFile.CreateFromDirectory(publishPath, X64CliZipPath);
-            DeleteDirectory(publishPath);
+            publishPath.DeleteDirectory();
 
             DotNetPublish(x => x
                 .SetProcessWorkingDirectory(RootDirectory / "Dangl.EvaluationPackageGenerator")
@@ -132,7 +131,7 @@ namespace Dangl.EvaluationPackageGenerator
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.NuGetVersionV2));
             ZipFile.CreateFromDirectory(publishPath, X86CliZipPath);
-            DeleteDirectory(publishPath);
+            publishPath.DeleteDirectory();
         });
 
     Target BuildDocumentation => _ => _

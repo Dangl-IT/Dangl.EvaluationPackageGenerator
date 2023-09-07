@@ -7,11 +7,11 @@ namespace Dangl.EvaluationPackageGenerator
     [System.CodeDom.Compiler.GeneratedCode("GitVersionBuild", "")]
     public static class VersionInfo
     {
-        public static string Version => "0.1.15";
-        public static string CommitInfo => "Branch.master.Sha.86858be679cacd0c8cc9309e2e3a7ed5e4fe1236";
-        public static string CommitDate => "2021-08-08";
-        public static string CommitHash => "86858be679cacd0c8cc9309e2e3a7ed5e4fe1236";
-        public static string InformationalVersion => "0.1.15+Branch.master.Sha.86858be679cacd0c8cc9309e2e3a7ed5e4fe1236";
-        public static DateTime BuildDateUtc => new DateTime(2021, 8, 8, 21, 37, 39, DateTimeKind.Utc);
+        public static string Version => "0.1.22";
+        public static string CommitInfo => "Branch.master.Sha.0ccf3a79642415cab4a5fd9c75f67be9418dff6a";
+        public static string CommitDate => "2023-07-24";
+        public static string CommitHash => "0ccf3a79642415cab4a5fd9c75f67be9418dff6a";
+        public static string InformationalVersion => "0.1.22+Branch.master.Sha.0ccf3a79642415cab4a5fd9c75f67be9418dff6a";
+        public static DateTime BuildDateUtc => new DateTime(2023, 9, 7, 8, 22, 27, DateTimeKind.Utc);
     }
 }
