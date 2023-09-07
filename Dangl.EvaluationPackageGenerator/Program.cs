@@ -6,8 +6,6 @@ namespace Dangl.EvaluationPackageGenerator
 {
     class Program
     {
-        public const string MYGET_USERNAME = "georgdangl";
-
         static async Task Main(string[] args)
         {
             Console.WriteLine("Dangl.EvaluationPackageGenerator");

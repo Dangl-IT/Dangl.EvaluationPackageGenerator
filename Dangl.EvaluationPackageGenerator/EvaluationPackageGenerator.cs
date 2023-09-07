@@ -12,8 +12,8 @@ namespace Dangl.EvaluationPackageGenerator
 {
     public class EvaluationPackageGenerator
     {
-        public const string MYGET_QUERY_URL = "https://www.myget.org/F/dangl-ava/api/v3/query";
-        public const string MYGET_FEED_URL = "https://www.myget.org/F/dangl-ava/api/v2/package/";
+        public const string FEED_QUERY_URL = "https://packages.dangl.dev/dangl-ava/nuget/v3/query";
+        public const string FEED_PACKAGES_URL = "https://packages.dangl.dev/dangl-ava/nuget/v3/packages/";
 
         private readonly CommandLineOptions _commandLineOptions;
 
@@ -73,7 +73,7 @@ namespace Dangl.EvaluationPackageGenerator
         {
             Console.WriteLine("Generating " + packageName + "...");
 
-            var queryUrl = includePrerelease ? $"{MYGET_QUERY_URL}?prerelease=true" : MYGET_QUERY_URL;
+            var queryUrl = includePrerelease ? $"{FEED_QUERY_URL}?prerelease=true" : FEED_QUERY_URL;
             var packagesJson = await _httpClient.GetStringAsync(queryUrl);
             var packages = JObject.Parse(packagesJson);
 
@@ -81,7 +81,7 @@ namespace Dangl.EvaluationPackageGenerator
                 .First(t => (string)t["id"] == packageName)
                 ["version"]);
 
-            var packageDownloadLink = $"{MYGET_FEED_URL}{packageName}/{packageVersion}";
+            var packageDownloadLink = $"{FEED_PACKAGES_URL}{packageName.ToLowerInvariant()}/{packageVersion.ToLowerInvariant()}/download";
 
             var packagePath = Path.Combine(packageFolder, packageName + "." + packageVersion + ".nupkg");
             using (var packageStream = await _httpClient.GetStreamAsync(packageDownloadLink))
@@ -129,7 +129,8 @@ namespace Dangl.EvaluationPackageGenerator
         private string GetBasicAuthValue()
         {
             return Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
-                .GetBytes(_commandLineOptions.MyGetUsername + ":" + _commandLineOptions.MyGetApiKey));
+                // When using an API key, the username doesn't matter
+                .GetBytes("DanglIT:" + _commandLineOptions.ApiKey));
         }
     }
 }

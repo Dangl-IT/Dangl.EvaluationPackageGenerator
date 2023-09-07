@@ -4,11 +4,8 @@ namespace Dangl.EvaluationPackageGenerator
 {
     public class CommandLineOptions
     {
-        [Option(Default = "georgdangl", HelpText = "The username under which the packages should be downloaded from the MyGet package feed")]
-        public string MyGetUsername { get; set; }
-
         [Option(Required = true)]
-        public string MyGetApiKey { get; set; }
+        public string ApiKey { get; set; }
 
         [Option(Default = "./")]
         public string OutputPath { get; set; }
