@@ -11,8 +11,6 @@ using Nuke.WebDocu;
 using System;
 using System.IO;
 using System.IO.Compression;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.DocFX.DocFXTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.WebDocu.WebDocuTasks;
