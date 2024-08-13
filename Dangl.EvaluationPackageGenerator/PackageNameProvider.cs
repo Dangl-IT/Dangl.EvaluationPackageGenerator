@@ -2,8 +2,8 @@
 {
     public static class PackageNameProvider
     {
-        public static string[] PackageNames => new[]
-            {
+        public static string[] AvaPackageNames =>
+            [
                 "Dangl.AVA",
                 "Dangl.AVA.Converter",
                 "Dangl.AVA.Converter.Excel",
@@ -15,7 +15,15 @@
                 "Dangl.REB",
                 "Dangl.REB.Formulas",
                 "Dangl.SIA",
-                "Dangl.ProductData"
-            };
+                "Dangl.ProductData",
+                "Dangl.XRechnung"
+            ];
+
+        public static string[] XRechnungPackageNames =>
+            [
+                "Dangl.AVA",
+                "Dangl.AVA.IO",
+                "Dangl.XRechnung"
+            ];
     }
 }

@@ -12,8 +12,10 @@ namespace Dangl.EvaluationPackageGenerator
 {
     public class EvaluationPackageGenerator
     {
-        public const string FEED_QUERY_URL = "https://packages.dangl.dev/dangl-ava/nuget/v3/query";
-        public const string FEED_PACKAGES_URL = "https://packages.dangl.dev/dangl-ava/nuget/v3/packages/";
+        public const string AVA_FEED_QUERY_URL = "https://packages.dangl.dev/dangl-ava/nuget/v3/query";
+        public const string XRECHNUNG_FEED_QUERY_URL = "https://packages.dangl.dev/dangl-xrechnung/nuget/v3/query";
+        public const string AVA_FEED_PACKAGES_URL = "https://packages.dangl.dev/dangl-ava/nuget/v3/packages/";
+        public const string XRECHNUNG_FEED_PACKAGES_URL = "https://packages.dangl.dev/dangl-xrechnung/nuget/v3/packages/";
 
         private readonly CommandLineOptions _commandLineOptions;
 
@@ -28,7 +30,7 @@ namespace Dangl.EvaluationPackageGenerator
         {
             var packageVersions = new Dictionary<string, string>();
 
-            var packageFolder = Path.Combine(_commandLineOptions.OutputPath, $"{DateTime.Now:yyyyMMdd}_Dangl.AVA");
+            var packageFolder = Path.Combine(_commandLineOptions.OutputPath, $"{DateTime.Now:yyyyMMdd}_Dangl.{_commandLineOptions.PackageType}");
             if (!Directory.Exists(packageFolder))
             {
                 Directory.CreateDirectory(packageFolder);
@@ -40,7 +42,7 @@ namespace Dangl.EvaluationPackageGenerator
             }
 
             SetupHttpClient();
-            foreach (var package in PackageNameProvider.PackageNames)
+            foreach (var package in GetPackageNames())
             {
                 var version = await DownloadSinglePackage(package, packageFolder, _commandLineOptions.IncludePrerelease);
                 packageVersions.Add(package, version);
@@ -50,7 +52,7 @@ namespace Dangl.EvaluationPackageGenerator
             packageInfos += Environment.NewLine + "The following versions were used:" + Environment.NewLine;
             packageInfos += "Please contact Dangl IT GmbH at info@dangl-it.com for support" + Environment.NewLine;
 
-            foreach (var package in PackageNameProvider.PackageNames)
+            foreach (var package in GetPackageNames())
             {
                 packageInfos += package + ": " + packageVersions[package] + Environment.NewLine;
             }
@@ -62,6 +64,16 @@ namespace Dangl.EvaluationPackageGenerator
             }
         }
 
+        private string[] GetPackageNames()
+        {
+            return _commandLineOptions.PackageType switch
+            {
+                PackageType.Ava => PackageNameProvider.AvaPackageNames,
+                PackageType.XRechnung => PackageNameProvider.XRechnungPackageNames,
+                _ => throw new InvalidOperationException("Unknown package type")
+            };
+        }
+
         private void SetupHttpClient()
         {
             _httpClient = new HttpClient();
@@ -71,9 +83,25 @@ namespace Dangl.EvaluationPackageGenerator
 
         private async Task<string> DownloadSinglePackage(string packageName, string packageFolder, bool includePrerelease)
         {
+            try
+            {
+                return await DownloadSinglePackageFromFeedAsync(packageName, packageFolder, includePrerelease, AVA_FEED_QUERY_URL, AVA_FEED_PACKAGES_URL);
+            }
+            catch (InvalidOperationException) // That means we didn't find the package on the AVA feed
+            {
+                return await DownloadSinglePackageFromFeedAsync(packageName, packageFolder, includePrerelease, XRECHNUNG_FEED_QUERY_URL, XRECHNUNG_FEED_PACKAGES_URL);
+            }
+        }
+
+        private async Task<string> DownloadSinglePackageFromFeedAsync(string packageName,
+            string packageFolder,
+            bool includePrerelease,
+            string feedQueryUrl,
+            string feedPackagesUrl)
+        {
             Console.WriteLine("Generating " + packageName + "...");
 
-            var queryUrl = includePrerelease ? $"{FEED_QUERY_URL}?prerelease=true" : FEED_QUERY_URL;
+            var queryUrl = includePrerelease ? $"{feedQueryUrl}?prerelease=true" : feedQueryUrl;
             var packagesJson = await _httpClient.GetStringAsync(queryUrl);
             var packages = JObject.Parse(packagesJson);
 
@@ -81,7 +109,7 @@ namespace Dangl.EvaluationPackageGenerator
                 .First(t => (string)t["id"] == packageName)
                 ["version"]);
 
-            var packageDownloadLink = $"{FEED_PACKAGES_URL}{packageName.ToLowerInvariant()}/{packageVersion.ToLowerInvariant()}/download";
+            var packageDownloadLink = $"{feedPackagesUrl}{packageName.ToLowerInvariant()}/{packageVersion.ToLowerInvariant()}/download";
 
             var packagePath = Path.Combine(packageFolder, packageName + "." + packageVersion + ".nupkg");
             using (var packageStream = await _httpClient.GetStreamAsync(packageDownloadLink))

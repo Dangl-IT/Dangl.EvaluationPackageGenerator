@@ -19,5 +19,6 @@ The following CLI parameters are available:
 | --apikey        | Required, the API Key to access the package feed. The account must have access to the private `dangl-ava` feed |
 | --outputpath        | Optional, defaults to `./`. Where the generated package should be placed |
 | --readmepath | Optional. If present, this file will be copied into the generated package |
-| --includeprerelease | Optional. Whether to include beta packages or only stable versions|
+| --includeprerelease | Optional. Whether to include beta packages or only stable versions |
+| --packagetype | Optional. Either `AVA` or `XRechnung`. `AVA` includes everything, while `XRechnung` only includes the `Dangl.XRechnung` package and its dependencies. Defaults to `AVA` |
 | --help    | Display options |

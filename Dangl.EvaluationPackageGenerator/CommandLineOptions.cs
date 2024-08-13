@@ -15,5 +15,8 @@ namespace Dangl.EvaluationPackageGenerator
 
         [Option(Required = false, Default = false, HelpText = "Whether or not to download the latest prerelease versions or stable versions")]
         public bool IncludePrerelease { get; set; }
+
+        [Option(Required = false, HelpText = "The type of package to generate, defaults to 'Ava'")]
+        public PackageType PackageType { get; set; } = PackageType.Ava;
     }
 }
