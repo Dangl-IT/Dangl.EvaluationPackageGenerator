@@ -23,7 +23,8 @@
             [
                 "Dangl.AVA",
                 "Dangl.AVA.IO",
-                "Dangl.XRechnung"
+                "Dangl.XRechnung",
+                "Dangl.XRechnung.Rendering"
             ];
     }
 }
