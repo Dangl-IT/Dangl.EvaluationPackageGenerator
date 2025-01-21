@@ -15,8 +15,7 @@
                 "Dangl.REB",
                 "Dangl.REB.Formulas",
                 "Dangl.SIA",
-                "Dangl.ProductData",
-                "Dangl.XRechnung"
+                "Dangl.ProductData"
             ];
 
         public static string[] XRechnungPackageNames =>
