@@ -35,10 +35,15 @@ namespace Dangl.EvaluationPackageGenerator
             {
                 Directory.CreateDirectory(packageFolder);
             }
+
+            var destReadmePath = Path.Combine(packageFolder, "README.txt");
             if (File.Exists(_commandLineOptions.ReadmePath))
             {
-                var destReadmePath = Path.Combine(packageFolder, "README.txt");
                 File.Copy(_commandLineOptions.ReadmePath, destReadmePath);
+            }
+            else
+            {
+                File.CreateText(destReadmePath).Write(GetDefaultReadmeContent());
             }
 
             SetupHttpClient();
@@ -159,6 +164,78 @@ namespace Dangl.EvaluationPackageGenerator
             return Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                 // When using an API key, the username doesn't matter
                 .GetBytes("DanglIT:" + _commandLineOptions.ApiKey));
+        }
+
+        private static string GetDefaultReadmeContent()
+        {
+            return @"This is an evaluation package for the Dangl.AVA & Dangl.GAEB libraries
+It is not intended for commercial use and redistribution to third parties is not allowed.
+The libraries and all its content must be deleted after the evaluation has been finished.
+
+This package includes also the Dangl.Oenorm package for the Austrian ÖNorm A2063 standards
+and the AVACloud client packages, both are also available without additional charge for
+customers of the GAEB & AVA .Net Libraries.
+
+Setup instructions:
+German -> https://www.dangl-it.de/artikel/einrichten-von-danglava-danglgaeb-in-visual-studio/
+English -> https://www.dangl-it.com/articles/setup-danglava-danglgaeb-in-visual-studio/
+
+Documentation for the libraries is available at:
+https://docs.dangl-it.com
+You need to have an user account. Please contact info@dangl-it.com to be granted access to the projects.
+
+
+Sample code can be found at: 
+https://github.com/Dangl-IT/Dangl.AVA.Examples
+
+
+To use the libraries, there are two options:
+
+	1. Use the NuGet packages from a local source
+	   To configure a local package in a Visual Studio solution, please add a file called NuGet.config
+	   with the following content to the solution root:
+	   
+	   ﻿<?xml version=""1.0"" encoding=""utf-8""?>
+         <configuration>
+           <packageSources>
+             <clear />
+             <add key=""local"" value=""./avapackages"" />
+             <add key=""nuget.org"" value=""https://api.nuget.org/v3/index.json"" protocolVersion=""3"" />
+           </packageSources>
+        </configuration>
+		
+		Then place all the *.nupkg files in a directory called ""avapackages"" in the solution root. You might have
+		to restart Visual Studio for it to pick up the changes.
+	
+	2. Reference the dlls directly
+	   All dlls are in the net45Dlls/ folder relative to this Readme
+
+	   
+When referencing the dlls, please make sure that the following NuGet dependencies from the public repository are referenced:
+	* Dangl.Calculator (https://www.nuget.org/packages/Dangl.Calculator/)
+	* Dangl.TextConverter (https://www.nuget.org/packages/Dangl.TextConverter/)
+	* Dangl.Common (https://www.nuget.org/packages/Dangl.Common/)
+	* HtmlAgilityPack (https://www.nuget.org/packages/HtmlAgilityPack/)
+	* Newtonsoft.Json (https://www.nuget.org/packages/Newtonsoft.Json)
+	* Antlr4.Runtime (https://www.nuget.org/packages/Antlr4.Runtime)
+	-- The following only when using Dangl.AVA.Converter.Excel
+	* ClosedXML (https://www.nuget.org/packages/ClosedXML/)
+
+The AVACloud clients are only published with a netstandard2.0 target. Please contact Dangl IT
+for infos how to get the clients compatible with .NET 3.5 or later.
+Find out more about the AVACloud GAEB SaaS Webservice:
+https://www.dangl-it.com/products/avacloud-gaeb-saas/
+
+---
+This package was generated with an automatic tool. Find out more at:
+https://github.com/Dangl-IT/Dangl.EvaluationPackageGenerator
+
+---
+Dangl IT GmbH
++49 (173) 56 45 689
+info@dangl-it.com
+www.dangl-it.com
+";
         }
     }
 }
