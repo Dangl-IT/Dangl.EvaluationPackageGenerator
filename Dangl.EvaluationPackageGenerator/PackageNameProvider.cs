@@ -9,7 +9,6 @@
                 "Dangl.AVA.Converter.Excel",
                 "Dangl.AVA.IO",
                 "Dangl.AVA.IO.AvaDiff",
-                "Dangl.AVA.IO",
                 "Dangl.AVA.IO.Flat",
                 "Dangl.AVACloud.Client",
                 "Dangl.AVACloud.Client.Shared",
